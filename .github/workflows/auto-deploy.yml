@@ -30,6 +30,8 @@ jobs:
         with:
           repository: ${{ github.repository }}
           older-than-seconds: 3600
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # 使用默认的 GITHUB_TOKEN
 
   keep-alive-and-build:
     runs-on: ubuntu-latest
