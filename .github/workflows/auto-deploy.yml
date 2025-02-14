@@ -1,4 +1,4 @@
-name: Redeploy Choreo
+name: auto deploy uptime-Choreo
 
 on:
   workflow_dispatch:
