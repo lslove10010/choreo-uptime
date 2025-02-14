@@ -1,13 +1,16 @@
-# 使用 Uptime Kuma 的官方镜像作为基础
+# 使用 Uptime Kuma 官方镜像
 FROM louislam/uptime-kuma:latest
 
-# 创建一个非 root 用户，并分配一个范围在 10000 到 20000 的 UID
-RUN adduser --disabled-password --gecos '' --uid 10014 uptimekuma
+# 创建用户和组
+RUN addgroup --gid 10014 choreo && \
+    adduser --disabled-password --no-create-home --uid 10014 --ingroup choreo choreouser
 
-# 将应用程序目录的所有权更改为新用户
-RUN chown -R uptimekuma:uptimekuma /app
+# 创建 worker 目录
+RUN mkdir -p /app/worker && \
+    chown -R choreouser:choreo /app/worker && \
+    chown -R choreouser:choreo /app/data
 
-# 切换到新用户
+# 切换到非 root 用户
 USER 10014
 
 # 暴露端口
