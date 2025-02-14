@@ -1,4 +1,4 @@
-name: auto deploy uptime-Choreo
+name: Redeploy Choreo and Keep Alive
 
 on:
   workflow_dispatch:
@@ -7,29 +7,36 @@ on:
 
 jobs:
   Redeploy:
-    name: Redeploy Choreo
-
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4.0.0
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 1
-          token: ${{ secrets.REPO_ACCESS_TOKEN }} # 使用自定义 PAT 来检出代码
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
 
       - name: Renew README.md
         run: |
-            DATE=$(date "+%Y/%m/%d %H:%M:%S")
-            echo "${DATE}" > README.md
-            git config --global user.email "byt16668@163.com"
-            git config --global user.name "lslove10010"
-            git add README.md
-            git commit -m "Auto deploy by Github Actions, ${DATE}"
-            git push --force
+          DATE=$(TZ=Asia/Shanghai date "+%Y/%m/%d %H:%M:%S") # 使用北京时间
+          echo "${DATE}" > README.md
+          git config --global user.email "byt16668@163.com"
+          git config --global user.name "lslove10010"
+          git add README.md
+          git commit -m "Auto deploy by Github Actions, ${DATE}"
+          git push --force
 
       - name: Delete old workflow runs
         uses: MajorScruffy/delete-old-workflow-runs@v0.3.0
         with:
-          github_token: ${{ secrets.REPO_ACCESS_TOKEN }}
           repository: ${{ github.repository }}
           older-than-seconds: 3600
+
+  keep-alive-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 步骤 1：保活 - 发送 HTTP 请求到 Choreo 应用
+      - name: Send HTTP request to Choreo
+        run: |
+          URL="https://29df7479-fa48-4cdd-906a-fea81b4a0838.e1-us-east-azure.choreoapps.dev" # 替换为你的 Choreo 应用的 URL
+          curl -s "$URL"
