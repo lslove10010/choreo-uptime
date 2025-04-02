@@ -15,5 +15,5 @@ RUN chmod +x /app/gost
 USER 10014
 
 # 运行 Gost
-ENTRYPOINT ["./app/gost"]
+ENTRYPOINT ["/app/gost"]
 CMD ["-D", "-L=socks5://:8080"]
