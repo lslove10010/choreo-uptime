@@ -17,7 +17,8 @@ WORKDIR /app
 
 COPY . .
 
-RUN cd cmd/gost && \
+RUN apk add --no-cache git && \
+    cd cmd/gost && \
     xx-go build && \
     xx-verify gost
 
@@ -26,7 +27,6 @@ FROM alpine:3.20
 
 # 添加 iptables 以支持 tun/tap
 RUN apk add --no-cache iptables
-
 # 创建用户和组
 RUN addgroup --gid 10014 choreo && \
     adduser --disabled-password --no-create-home --uid 10014 --ingroup choreo choreouser
@@ -41,7 +41,8 @@ COPY --from=builder /app/cmd/gost/gost .
 RUN chown choreouser:choreo /app/gost
 
 # 切换到非 root 用户
-USER 10014
+USER 10001
+
 # 运行 Gost
 ENTRYPOINT ["/app/gost"]
-CMD ["-L", "socks5://:8080"]
+CMD ["-L", "socks5://:8080", "-D"]
