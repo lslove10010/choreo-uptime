@@ -12,5 +12,5 @@ WORKDIR /app
 USER 10014
 
 # 运行 Gost
-ENTRYPOINT ["gost"]
-CMD ["-L", "socks5://:8080", "-D"]
+ENTRYPOINT ["./gost"]
+CMD ["-D", "-L=socks5://:8080"]
