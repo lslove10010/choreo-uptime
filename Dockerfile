@@ -8,7 +8,8 @@ RUN addgroup --gid 10014 choreo && \
 # 设置工作目录
 WORKDIR /app
 
-# 确保 gost 二进制文件具有执行权限
+# 复制 Gost 二进制文件并设置权限
+COPY --from=builder /app/cmd/gost/gost /app/gost
 RUN chmod +x /app/gost
 
 # 切换到非 root 用户
