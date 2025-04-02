@@ -41,7 +41,7 @@ COPY --from=builder /app/cmd/gost/gost .
 RUN chown choreouser:choreo /app/gost
 
 # 切换到非 root 用户
-USER choreouser
+USER 10014
 # 运行 Gost
 ENTRYPOINT ["/app/gost"]
 CMD ["-L", "socks5://:8080"]
