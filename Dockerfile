@@ -1,5 +1,5 @@
 # 使用已经构建好的 gogost/gost 镜像
-FROM gogost/gost:latest
+FROM gogost/gost:3.0.0-nightly.20250218
 
 # 创建用户和组
 RUN addgroup --gid 10014 choreo && \
