@@ -27,6 +27,7 @@ FROM alpine:3.20
 
 # 添加 iptables 以支持 tun/tap
 RUN apk add --no-cache iptables
+
 # 创建用户和组
 RUN addgroup --gid 10014 choreo && \
     adduser --disabled-password --no-create-home --uid 10014 --ingroup choreo choreouser
@@ -41,7 +42,7 @@ COPY --from=builder /app/cmd/gost/gost .
 RUN chown choreouser:choreo /app/gost
 
 # 切换到非 root 用户
-USER 10001
+USER 10014
 
 # 运行 Gost
 ENTRYPOINT ["/app/gost"]
